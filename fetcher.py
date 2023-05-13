@@ -28,7 +28,7 @@ sheet['C1'].font = bold_font
 
 # Open the text file for reading
 try:
-    with open('logfile.txt', 'r') as file:
+    with open('logfile.txt', 'r', encoding='utf-8') as file:
         lines = file.readlines()
 except IOError:
     print("Error: Unable to open the file 'logfile.txt'")
