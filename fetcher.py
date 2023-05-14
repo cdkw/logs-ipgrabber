@@ -44,7 +44,7 @@ sheet['D1'] = 'Geolocation'
 sheet.column_dimensions['A'].width = 17
 sheet.column_dimensions['B'].width = 40
 sheet.column_dimensions['C'].width = 10
-sheet.column_dimensions['D'].width = 30
+sheet.column_dimensions['D'].width = 50
 bold_font = Font(bold=True)
 sheet['A1'].font = bold_font
 sheet['B1'].font = bold_font
@@ -98,7 +98,7 @@ for ip, data in ip_data.items():
     sheet.cell(row=row, column=1).value = ip
     sheet.cell(row=row, column=2).value = ', '.join(data['names'])
     sheet.cell(row=row, column=3).value = 'Yes' if data['is_vpn'] else 'No' if args.vpn else '-'
-    sheet.cell(row=row, column=4).value = data['geolocation'] if args.geolocation else ''
+    sheet.cell(row=row, column=4).value = data['geolocation'] if args.geolocation else '-'
     row += 1
 
 
