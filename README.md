@@ -1,4 +1,4 @@
-<h1 align="center">Grab the IPs from a Minecraft log file</h1>
+<h1 align="center">Grab player's IPs from a Minecraft log file</h1>
 
 <p align="center">
 <a href="#"><img alt="logs-ipgrabber forks" src="https://img.shields.io/github/forks/cdkw/logs-ipgrabber?style=for-the-badge"></a>
