@@ -18,19 +18,14 @@ if not args.file:
 
 # vpn and geolocation
 if args.vpn and args.geolocation:
-    access_key = 'YOUR_ACCESS_KEY'
+    access_key = 'ACCESS_KEY_HERE!' #----------------------------------------------------------------------------------------------------
 elif args.vpn or args.geolocation:
     print("Error: Both VPN and geolocation options need to be specified. Please provide both or neither.")
     exit()
 else:
     access_key = None
 
-# key good?
-if access_key:
-    response = requests.get(f'https://ipapi.com/{access_key}')
-    if response.status_code != 200:
-        print("Error: Invalid access key. Please provide a valid access key from https://ipapi.com/")
-        exit()
+
 
 
 workbook = openpyxl.Workbook()
@@ -76,20 +71,25 @@ for line in lines:
             ip_data[ip] = {'names': [name], 'is_vpn': None, 'geolocation': None}
 
 
-if args.geolocation:
+if args.geolocation or args.vpn:
     for ip, data in ip_data.items():
-        response = requests.get(f'https://ipapi.com/{ip}?access_key={access_key}')
+        response = requests.get(f'http://api.ipapi.com/{ip}?access_key={access_key}')
         if response.status_code == 200:
             result = response.json()
-            data['geolocation'] = result.get('country_name', '') + ', ' + result.get('city', '')
+
+            if args.geolocation:
+                country = result.get('country_name', '')
+                city = result.get('city', '')
+                data['geolocation'] = f'{country}, {city}' if country or city else 'Unknown'
+
+            if args.vpn:
+                data['is_vpn'] = result.get('security', {}).get('is_vpn', False)
+        else:
+            print(f"Error: Unable to retrieve data for IP {ip}. Status code: {response.status_code}")
+            data['geolocation'] = 'Error' if args.geolocation else '-'
+            data['is_vpn'] = 'Error' if args.vpn else '-'
 
 
-if args.vpn:
-    for ip, data in ip_data.items():
-        response = requests.get(f'https://ipapi.com/{ip}?access_key={access_key}')
-        if response.status_code == 200:
-            result = response.json()
-            data['is_vpn'] = result.get('security', {}).get('is_vpn')
 
 for ip, data in ip_data.items():
     sheet.cell(row=row, column=1).value = ip
