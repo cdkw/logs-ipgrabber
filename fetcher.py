@@ -6,19 +6,17 @@ import argparse
 
 pattern = r'\[Server thread/INFO\]: (\w+)\[/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):\d+\] logged'
 
-# CLI Arguments
 parser = argparse.ArgumentParser(description='Extract log information.')
 parser.add_argument('--file', '-f', help='Specify the log file name')
 parser.add_argument('--vpn', '-v', action='store_true', help='Enable VPN finding')
 parser.add_argument('--geolocation', '-g', action='store_true', help='Enable IP geolocation')
 args = parser.parse_args()
 
-# Log File Error
 if not args.file:
     print("Error: Log file name not specified. Please provide the log file using --file or -f.")
     exit()
 
-# VPN, Geolocation error
+# vpn and geolocation
 if args.vpn and args.geolocation:
     access_key = 'YOUR_ACCESS_KEY'
 elif args.vpn or args.geolocation:
@@ -27,7 +25,7 @@ elif args.vpn or args.geolocation:
 else:
     access_key = None
 
-# Validate the provided access key
+# key good?
 if access_key:
     response = requests.get(f'https://ipapi.com/{access_key}')
     if response.status_code != 200:
@@ -93,7 +91,6 @@ if args.vpn:
             result = response.json()
             data['is_vpn'] = result.get('security', {}).get('is_vpn')
 
-# Write everything to the sheet
 for ip, data in ip_data.items():
     sheet.cell(row=row, column=1).value = ip
     sheet.cell(row=row, column=2).value = ', '.join(data['names'])
