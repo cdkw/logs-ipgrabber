@@ -31,6 +31,3 @@ if args.vpn and args.geolocation:
     access_key = 'ACCESS_KEY_HERE!'  ## <-- Put it there!
 elif args.vpn...
 ```
-
-* ETH `0xFD03ee7AB099223a4B33327955a9aF3dd3DCDA61`
-* SOL `7HDSAnXosAWNiuBwZCv18CdWc9aZCpdNoCBKAf11C7BD`
